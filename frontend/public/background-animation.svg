@@ -1,0 +1,51 @@
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <!-- Forma 1: Círculos -->
+  <circle cx="100" cy="200" r="10" fill="none" stroke="#4caf50" stroke-width="2">
+    <animate attributeName="cx" from="100" to="1800" dur="20s" repeatCount="indefinite" />
+    <animate attributeName="cy" from="200" to="600" dur="18s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="600" cy="900" r="10" fill="none" stroke="#4caf50" stroke-width="2">
+    <animate attributeName="cx" from="600" to="50" dur="22s" repeatCount="indefinite" />
+    <animate attributeName="cy" from="900" to="200" dur="20s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="1200" cy="300" r="10" fill="none" stroke="#4caf50" stroke-width="2">
+    <animate attributeName="cx" from="1200" to="400" dur="25s" repeatCount="indefinite" />
+    <animate attributeName="cy" from="300" to="700" dur="24s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="400" cy="700" r="10" fill="none" stroke="#4caf50" stroke-width="2">
+    <animate attributeName="cx" from="400" to="1500" dur="27s" repeatCount="indefinite" />
+    <animate attributeName="cy" from="700" to="100" dur="25s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Forma 2: Quadrados -->
+  <rect x="300" y="500" width="20" height="20" fill="none" stroke="#e67e22" stroke-width="2">
+    <animate attributeName="x" from="300" to="1200" dur="26s" repeatCount="indefinite" />
+    <animate attributeName="y" from="500" to="800" dur="24s" repeatCount="indefinite" />
+  </rect>
+  <rect x="1500" y="700" width="20" height="20" fill="none" stroke="#e67e22" stroke-width="2">
+    <animate attributeName="x" from="1500" to="100" dur="28s" repeatCount="indefinite" />
+    <animate attributeName="y" from="700" to="300" dur="26s" repeatCount="indefinite" />
+  </rect>
+  <rect x="800" y="200" width="20" height="20" fill="none" stroke="#e67e22" stroke-width="2">
+    <animate attributeName="x" from="800" to="1600" dur="30s" repeatCount="indefinite" />
+    <animate attributeName="y" from="200" to="600" dur="28s" repeatCount="indefinite" />
+  </rect>
+  <rect x="200" y="900" width="20" height="20" fill="none" stroke="#e67e22" stroke-width="2">
+    <animate attributeName="x" from="200" to="700" dur="32s" repeatCount="indefinite" />
+    <animate attributeName="y" from="900" to="400" dur="30s" repeatCount="indefinite" />
+  </rect>
+
+  <!-- Forma 3: Triângulos -->
+  <polygon points="10,0 20,20 0,20" fill="none" stroke="#34495e" stroke-width="2">
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="1500 600" dur="30s" repeatCount="indefinite" />
+  </polygon>
+  <polygon points="10,0 20,20 0,20" fill="none" stroke="#34495e" stroke-width="2">
+    <animateTransform attributeName="transform" type="translate" from="600 100" to="1000 800" dur="34s" repeatCount="indefinite" />
+  </polygon>
+  <polygon points="10,0 20,20 0,20" fill="none" stroke="#34495e" stroke-width="2">
+    <animateTransform attributeName="transform" type="translate" from="800 200" to="200 700" dur="28s" repeatCount="indefinite" />
+  </polygon>
+  <polygon points="10,0 20,20 0,20" fill="none" stroke="#34495e" stroke-width="2">
+    <animateTransform attributeName="transform" type="translate" from="400 400" to="1200 100" dur="32s" repeatCount="indefinite" />
+  </polygon>
+</svg>

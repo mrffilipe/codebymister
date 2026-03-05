@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider } from './contexts/AuthContext';
 import { PrivateRoute } from './components/Layout/PrivateRoute';
 import { MainLayout } from './components/Layout/MainLayout';
+import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Leads } from './pages/Leads';
@@ -21,9 +22,15 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+            {/* Página Institucional - Pública */}
+            <Route path="/" element={<Landing />} />
+            
+            {/* Login */}
             <Route path="/login" element={<Login />} />
+            
+            {/* Dashboard - Rotas Protegidas */}
             <Route
-              path="/"
+              path="/dashboard"
               element={
                 <PrivateRoute>
                   <MainLayout>
@@ -33,7 +40,7 @@ function App() {
               }
             />
             <Route
-              path="/leads"
+              path="/dashboard/leads"
               element={
                 <PrivateRoute>
                   <MainLayout>
@@ -43,7 +50,7 @@ function App() {
               }
             />
             <Route
-              path="/outreach"
+              path="/dashboard/outreach"
               element={
                 <PrivateRoute>
                   <MainLayout>
@@ -53,7 +60,7 @@ function App() {
               }
             />
             <Route
-              path="/conversations"
+              path="/dashboard/conversations"
               element={
                 <PrivateRoute>
                   <MainLayout>
@@ -63,7 +70,7 @@ function App() {
               }
             />
             <Route
-              path="/proposals"
+              path="/dashboard/proposals"
               element={
                 <PrivateRoute>
                   <MainLayout>
@@ -73,7 +80,7 @@ function App() {
               }
             />
             <Route
-              path="/projects"
+              path="/dashboard/projects"
               element={
                 <PrivateRoute>
                   <MainLayout>
@@ -83,7 +90,7 @@ function App() {
               }
             />
             <Route
-              path="/maintenance"
+              path="/dashboard/maintenance"
               element={
                 <PrivateRoute>
                   <MainLayout>

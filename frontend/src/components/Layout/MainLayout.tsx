@@ -49,13 +49,13 @@ export function MainLayout({ children }: MainLayoutProps) {
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-    { text: 'Leads', icon: <PeopleIcon />, path: '/leads' },
-    { text: 'Abordagens', icon: <CampaignIcon />, path: '/outreach' },
-    { text: 'Conversas', icon: <ChatIcon />, path: '/conversations' },
-    { text: 'Propostas', icon: <DescriptionIcon />, path: '/proposals' },
-    { text: 'Projetos', icon: <WorkIcon />, path: '/projects' },
-    { text: 'Manutenção', icon: <BuildIcon />, path: '/maintenance' },
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+    { text: 'Leads', icon: <PeopleIcon />, path: '/dashboard/leads' },
+    { text: 'Abordagens', icon: <CampaignIcon />, path: '/dashboard/outreach' },
+    { text: 'Conversas', icon: <ChatIcon />, path: '/dashboard/conversations' },
+    { text: 'Propostas', icon: <DescriptionIcon />, path: '/dashboard/proposals' },
+    { text: 'Projetos', icon: <WorkIcon />, path: '/dashboard/projects' },
+    { text: 'Manutenção', icon: <BuildIcon />, path: '/dashboard/maintenance' },
   ];
 
   const drawer = (
@@ -157,8 +157,10 @@ export function MainLayout({ children }: MainLayoutProps) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          p: { xs: 2, sm: 3 },
+          width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` },
+          maxWidth: '100vw',
+          overflowX: 'hidden',
         }}
       >
         <Toolbar />

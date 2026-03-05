@@ -3,10 +3,6 @@ import {
   Box,
   Button,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   TextField,
   MenuItem,
   Table,
@@ -19,10 +15,14 @@ import {
   IconButton,
   Chip,
   CircularProgress,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Add, Edit, Delete } from '@mui/icons-material';
 import { leadsService } from '../services/leadsService';
 import type { LeadDto, CreateLeadRequest, LeadPriority, LeadSource } from '../types/lead';
+import { StepperDialog } from '../components/StepperDialog';
+import { phoneMask, removeMask, instagramMask } from '../utils/masks';
 
 const priorityLabels = {
   1: 'Baixa',
@@ -115,20 +115,33 @@ export function Leads() {
   const handleCloseDialog = () => {
     setDialogOpen(false);
     setEditingLead(null);
+    setFormData({
+      name: '',
+      segment: '',
+      city: '',
+      problemDescription: '',
+      priority: 2,
+      source: 1,
+      website: '',
+      instagram: '',
+      phone: '',
+    });
   };
 
   const handleSubmit = async () => {
-    try {
-      if (editingLead) {
-        await leadsService.update(editingLead.id, formData);
-      } else {
-        await leadsService.create(formData);
-      }
-      handleCloseDialog();
-      loadLeads();
-    } catch (error) {
-      console.error('Erro ao salvar lead:', error);
+    const dataToSend = {
+      ...formData,
+      phone: formData.phone ? removeMask(formData.phone) : '',
+      instagram: formData.instagram ? formData.instagram.replace('@', '') : '',
+    };
+
+    if (editingLead) {
+      await leadsService.update(editingLead.id, dataToSend);
+    } else {
+      await leadsService.create(dataToSend);
     }
+    handleCloseDialog();
+    loadLeads();
   };
 
   const handleDelete = async (id: string) => {
@@ -142,6 +155,9 @@ export function Leads() {
     }
   };
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
@@ -151,20 +167,23 @@ export function Leads() {
   }
 
   return (
-    <Box>
+    <Box sx={{ width: '100%', overflowX: 'hidden' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4">Leads</Typography>
+        <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }}>
+          Leads
+        </Typography>
         <Button
           variant="contained"
-          startIcon={<Add />}
+          startIcon={!isMobile && <Add />}
           onClick={() => handleOpenDialog()}
+          size={isMobile ? 'small' : 'medium'}
         >
-          Novo Lead
+          {isMobile ? 'Novo' : 'Novo Lead'}
         </Button>
       </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
+      <TableContainer component={Paper} sx={{ width: '100%', overflowX: 'auto' }}>
+        <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
               <TableCell>Nome</TableCell>
@@ -213,101 +232,107 @@ export function Leads() {
         </Table>
       </TableContainer>
 
-      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
-        <DialogTitle>
-          {editingLead ? 'Editar Lead' : 'Novo Lead'}
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-            <TextField
-              label="Nome"
-              fullWidth
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              required
-            />
-            <TextField
-              label="Segmento"
-              fullWidth
-              value={formData.segment}
-              onChange={(e) => setFormData({ ...formData, segment: e.target.value })}
-              required
-            />
-            <TextField
-              label="Cidade"
-              fullWidth
-              value={formData.city}
-              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-              required
-            />
-            <TextField
-              label="Descrição do Problema"
-              fullWidth
-              multiline
-              rows={3}
-              value={formData.problemDescription}
-              onChange={(e) =>
-                setFormData({ ...formData, problemDescription: e.target.value })
-              }
-              required
-            />
-            <TextField
-              label="Prioridade"
-              select
-              fullWidth
-              value={formData.priority}
-              onChange={(e) =>
-                setFormData({ ...formData, priority: Number(e.target.value) as LeadPriority })
-              }
-            >
-              {Object.entries(priorityLabels).map(([value, label]) => (
-                <MenuItem key={value} value={Number(value)}>
-                  {label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="Origem"
-              select
-              fullWidth
-              value={formData.source}
-              onChange={(e) =>
-                setFormData({ ...formData, source: Number(e.target.value) as LeadSource })
-              }
-            >
-              {Object.entries(sourceLabels).map(([value, label]) => (
-                <MenuItem key={value} value={Number(value)}>
-                  {label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="Website"
-              fullWidth
-              value={formData.website}
-              onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-            />
-            <TextField
-              label="Instagram"
-              fullWidth
-              value={formData.instagram}
-              onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-            />
-            <TextField
-              label="Telefone"
-              fullWidth
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button onClick={handleSubmit} variant="contained">
-            Salvar
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <StepperDialog
+        open={dialogOpen}
+        title={editingLead ? 'Editar Lead' : 'Novo Lead'}
+        steps={['Informações Básicas', 'Detalhes', 'Contato']}
+        onClose={handleCloseDialog}
+        onSave={handleSubmit}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TextField
+            label="Nome"
+            fullWidth
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+          />
+          <TextField
+            label="Segmento"
+            fullWidth
+            value={formData.segment}
+            onChange={(e) => setFormData({ ...formData, segment: e.target.value })}
+            required
+          />
+          <TextField
+            label="Cidade"
+            fullWidth
+            value={formData.city}
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+            required
+          />
+        </Box>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TextField
+            label="Descrição do Problema"
+            fullWidth
+            multiline
+            rows={4}
+            value={formData.problemDescription}
+            onChange={(e) =>
+              setFormData({ ...formData, problemDescription: e.target.value })
+            }
+            required
+          />
+          <TextField
+            label="Prioridade"
+            select
+            fullWidth
+            value={formData.priority}
+            onChange={(e) =>
+              setFormData({ ...formData, priority: Number(e.target.value) as LeadPriority })
+            }
+          >
+            {Object.entries(priorityLabels).map(([value, label]) => (
+              <MenuItem key={value} value={Number(value)}>
+                {label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Origem"
+            select
+            fullWidth
+            value={formData.source}
+            onChange={(e) =>
+              setFormData({ ...formData, source: Number(e.target.value) as LeadSource })
+            }
+          >
+            {Object.entries(sourceLabels).map(([value, label]) => (
+              <MenuItem key={value} value={Number(value)}>
+                {label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TextField
+            label="Telefone"
+            fullWidth
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: phoneMask(e.target.value) })}
+            placeholder="(00) 00000-0000"
+            inputProps={{ maxLength: 15 }}
+          />
+          <TextField
+            label="Instagram"
+            fullWidth
+            value={formData.instagram}
+            onChange={(e) => setFormData({ ...formData, instagram: instagramMask(e.target.value) })}
+            placeholder="@usuario"
+          />
+          <TextField
+            label="Website"
+            fullWidth
+            type="url"
+            value={formData.website}
+            onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+            placeholder="https://exemplo.com"
+          />
+        </Box>
+      </StepperDialog>
     </Box>
   );
 }

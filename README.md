@@ -21,13 +21,14 @@ codebymister/
           ├── Repositories/  # Escrita
           └── Queries/       # Leitura otimizada
     Codebymister.API/
-  dashboard/            # SPA em React
+  frontend/             # SPA em React + TypeScript + Vite + MUI
+  code-by-mister/       # Projeto institucional (legado)
 ```
 
 ## Documentação Detalhada
 
 - **Backend**: `backend/README.md` - Arquitetura CQRS, autenticação, configuração
-- **Frontend**: `dashboard/README.md` - Variáveis de ambiente, fluxo de autenticação
+- **Frontend**: `frontend/README.md` - Variáveis de ambiente, fluxo de autenticação, componentes
 
 ---
 
@@ -70,12 +71,14 @@ dotnet run --project Codebymister.API
 ### Frontend
 
 ```bash
-cd dashboard
+cd frontend
 npm install
 npm run dev
 ```
 
-- App: `http://localhost:3001`
+- App: `http://localhost:3002` (ou 3001 se disponível)
+- Landing Page: `http://localhost:3002/`
+- Dashboard: `http://localhost:3002/dashboard`
 
 ---
 

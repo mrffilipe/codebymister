@@ -1,5 +1,5 @@
 {
-  "name": "dashboard",
+  "name": "codebymister",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,14 +11,19 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@hookform/resolvers": "^5.2.2",
     "@mui/icons-material": "^7.3.8",
+    "@mui/lab": "^7.0.1-beta.23",
     "@mui/material": "^7.3.8",
     "@mui/x-charts": "^8.27.0",
     "axios": "^1.13.5",
     "firebase": "^11.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router": "^7.13.0"
+    "react-hook-form": "^7.71.2",
+    "react-input-mask": "^2.0.4",
+    "react-router": "^7.13.0",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
