@@ -1,0 +1,6 @@
+services:
+  codebymister.api:
+    image: ${DOCKER_REGISTRY-}codebymisterapi
+    build:
+      context: .
+      dockerfile: Codebymister.API/Dockerfile

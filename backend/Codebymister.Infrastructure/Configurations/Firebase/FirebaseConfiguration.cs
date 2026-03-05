@@ -6,16 +6,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Codebymister.Infrastructure.Configurations.Firebase;
 
 public static class FirebaseConfiguration
 {
-    public static IServiceCollection AddFirebaseConfigurations(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddFirebaseConfigurations(
+    this IServiceCollection services,
+    IConfiguration configuration)
     {
         var base64 = configuration["FIREBASE_SERVICE_ACCOUNT_BASE64"];
+
         var projectId = configuration["Firebase:ProjectId"]
             ?? throw new InvalidOperationException("Firebase:ProjectId não configurado.");
+
         var environment = configuration["ASPNETCORE_ENVIRONMENT"]
             ?? throw new InvalidOperationException("ASPNETCORE_ENVIRONMENT não configurado.");
 
@@ -26,12 +31,29 @@ public static class FirebaseConfiguration
             var json = Encoding.UTF8.GetString(Convert.FromBase64String(base64));
 
             var serviceAccount = JsonSerializer.Deserialize<ServiceAccountKey>(json)
-                ?? throw new ArgumentNullException(nameof(json));
+                ?? throw new InvalidOperationException("ServiceAccount inválido.");
+
+            if (string.IsNullOrWhiteSpace(serviceAccount.PrivateKey))
+                throw new InvalidOperationException("Firebase private_key não configurada.");
+
+            if (string.IsNullOrWhiteSpace(serviceAccount.ClientEmail))
+                throw new InvalidOperationException("Firebase client_email não configurado.");
 
             var initializer = new ServiceAccountCredential.Initializer(serviceAccount.ClientEmail)
-                .FromPrivateKey(serviceAccount.PrivateKey);
+            {
+                Scopes = new[]
+                {
+                "https://www.googleapis.com/auth/firebase.messaging",
+                "https://www.googleapis.com/auth/firebase.auth",
+                "https://www.googleapis.com/auth/cloud-platform"
+            }
+            };
 
-            credential = GoogleCredential.FromServiceAccountCredential(new ServiceAccountCredential(initializer));
+            var serviceAccountCredential = new ServiceAccountCredential(
+                initializer.FromPrivateKey(serviceAccount.PrivateKey)
+            );
+
+            credential = GoogleCredential.FromServiceAccountCredential(serviceAccountCredential);
         }
         else
         {
@@ -45,6 +67,7 @@ public static class FirebaseConfiguration
         };
 
         var firebaseApp = FirebaseApp.DefaultInstance;
+
         if (firebaseApp == null)
         {
             firebaseApp = FirebaseApp.Create(appOptions);
@@ -76,12 +99,23 @@ public static class FirebaseConfiguration
     }
 }
 
-internal class ServiceAccountKey
+public class ServiceAccountKey
 {
+    [JsonPropertyName("type")]
     public string Type { get; set; } = default!;
+
+    [JsonPropertyName("project_id")]
     public string ProjectId { get; set; } = default!;
+
+    [JsonPropertyName("private_key_id")]
     public string PrivateKeyId { get; set; } = default!;
+
+    [JsonPropertyName("private_key")]
     public string PrivateKey { get; set; } = default!;
+
+    [JsonPropertyName("client_email")]
     public string ClientEmail { get; set; } = default!;
+
+    [JsonPropertyName("client_id")]
     public string ClientId { get; set; } = default!;
 }

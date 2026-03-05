@@ -54,7 +54,7 @@ Se `VITE_API_URL` não for definida, o axios usa o fallback `http://localhost:50
 
 ```bash
 npm install
-npm run dev
+npm run dev    # Servidor em http://localhost:3000
 npm run build
 ```
 

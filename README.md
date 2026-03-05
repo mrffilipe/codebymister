@@ -76,9 +76,9 @@ npm install
 npm run dev
 ```
 
-- App: `http://localhost:3002` (ou 3001 se disponível)
-- Landing Page: `http://localhost:3002/`
-- Dashboard: `http://localhost:3002/dashboard`
+- App: `http://localhost:3000`
+- Landing Page: `http://localhost:3000/`
+- Dashboard: `http://localhost:3000/dashboard`
 
 ---
 
@@ -129,3 +129,50 @@ Todas as variáveis devem ter prefixo `VITE_`:
 - `GET|POST|PUT|DELETE /api/v1/projects` - Gestão de projetos
 - `GET|POST|PUT|DELETE /api/v1/maintenances` - Gestão de manutenções
 - `GET /api/v1/dashboard` - Métricas e KPIs
+
+---
+
+## Deploy
+
+### Backend (Docker + Infisical)
+
+**Desenvolvimento - Build e Push:**
+```bash
+cd backend
+docker login ghcr.io -u mrffilipe
+docker build -t ghcr.io/mrffilipe/codebymister-api:1.0.0 -f Codebymister.API/Dockerfile .
+docker tag ghcr.io/mrffilipe/codebymister-api:1.0.0 ghcr.io/mrffilipe/codebymister-api:latest
+docker push ghcr.io/mrffilipe/codebymister-api:1.0.0
+```
+
+**Produção - Deploy na VPS:**
+```bash
+docker login ghcr.io
+infisical init
+infisical secrets --output=dotenv > .env
+docker compose up -d
+```
+
+**Logs:**
+```bash
+docker logs --tail 100 codebymister-api
+```
+
+### Frontend
+
+Build para produção:
+```bash
+cd frontend
+npm run build
+```
+
+Arquivos gerados em `dist/` prontos para deploy em servidores estáticos (Netlify, Vercel, etc.)
+
+---
+
+## Tecnologias de Deploy
+
+- **Docker**: Containerização do backend
+- **GitHub Container Registry (ghcr.io)**: Registry de imagens Docker
+- **Infisical**: Gerenciamento seguro de secrets e variáveis de ambiente
+- **Docker Compose**: Orquestração de containers em produção
