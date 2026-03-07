@@ -66,8 +66,9 @@ export const HeroSection = () => {
               animation: 'slideIn 0.8s ease-out 0.2s both',
             }}
           >
-            Especialista em backend com experiência em frontend, mobile e
-            arquitetura de software. Transformo ideias em soluções robustas.
+            Engenheiro de Software especializado em backend com experiência em
+            desenvolvimento full-stack. Apaixonado por transformar ideias complexas
+            em soluções robustas e escaláveis.
           </Typography>
 
           <Stack

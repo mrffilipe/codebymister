@@ -4,11 +4,11 @@ import { Work as WorkIcon } from '@mui/icons-material';
 
 const experiences = [
   {
-    company: 'Desenvolvedor Backend',
+    company: 'Desenvolvedor Full Stack',
     role: 'Freelancer',
     period: 'Fev 2021 - Atual',
     description:
-      'Como freelancer, aprimorei minhas habilidades em liderança e comunicação, trabalhando com uma ampla gama de tecnologias em projetos diversificados.',
+      'Como freelancer full stack, desenvolvi soluções completas desde a arquitetura backend até a interface frontend. Atuei principalmente em projetos nas áreas de gestão, saúde, educação e plataformas SaaS, criando sistemas CRM, plataformas de aprendizado e soluções de gestão de dados. Liderei o ciclo completo de desenvolvimento desde a concepção até o deploy em produção. Aprimorei habilidades em liderança técnica, comunicação com clientes e gestão de projetos ágeis.',
     technologies: [
       'C#',
       '.NET Core',
@@ -24,11 +24,11 @@ const experiences = [
     ],
   },
   {
-    company: 'Desenvolvedor Autodidata',
-    role: 'Autodidata',
+    company: 'Entusiasta de Tecnologia',
+    role: 'Estudante',
     period: 'Abr 2015 - Dez 2020',
     description:
-      'Iniciei minha jornada na programação com foco em C# e Unity3D, desenvolvendo jogos e aplicações interativas. Posteriormente, ampliei minha base técnica para o desenvolvimento web, aprendendo HTML, CSS, JavaScript e introduzindo-me ao Node.js.',
+      'Iniciei minha jornada na programação como entusiasta, explorando C# e Unity3D para desenvolver jogos e aplicações interativas. Ampliei minha base técnica para desenvolvimento web, aprendendo HTML, CSS, JavaScript e introduzindo-me ao ecossistema Node.js.',
     technologies: [
       'C#',
       'Unity3D',

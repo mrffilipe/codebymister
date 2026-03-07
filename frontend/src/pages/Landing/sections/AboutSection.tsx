@@ -59,7 +59,7 @@ export const AboutSection = () => {
             >
               <Box
                 component="img"
-                src="/profile_picture.jpg"
+                src="/profile-picture.jpeg"
                 alt="Filipe"
                 sx={{
                   width: '100%',
@@ -79,23 +79,25 @@ export const AboutSection = () => {
             </Typography>
 
             <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-              Olá! Meu nome é Filipe, sou um desenvolvedor backend apaixonado por
-              tecnologia. Minha jornada começou em 2015, quando dei meus primeiros
-              passos na programação de forma autodidata, explorando linguagens
-              como <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>C#</Box> e ferramentas como{' '}
+              Olá! Meu nome é Filipe, sou um Engenheiro de Software apaixonado por
+              tecnologia e inovação. Minha jornada começou em 2015 como{' '}
+              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>entusiasta de tecnologia</Box>,
+              explorando linguagens como{' '}
+              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>C#</Box> e ferramentas como{' '}
               <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>Unity3D</Box>. Desde então,
               construí uma base sólida em{' '}
               <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>engenharia de software</Box>,
               com experiência em{' '}
-              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>frontend</Box>,{' '}
-              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>mobile</Box>, e muito mais.
+              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>desenvolvimento full-stack</Box>,{' '}
+              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>arquitetura de sistemas</Box>, e muito mais.
             </Typography>
 
             <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-              Atualmente, meu foco está em dominar tecnologias como{' '}
-              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>C#</Box>,{' '}
-              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>TypeScript</Box>, e{' '}
-              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>React</Box>, além de atuar com
+              Atualmente, meu foco está em dominar tecnologias modernas como{' '}
+              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>.NET 9</Box>,{' '}
+              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>TypeScript</Box>,{' '}
+              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>React</Box>, e{' '}
+              <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>Node.js</Box>. Além de atuar com
               desenvolvimento mobile utilizando{' '}
               <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>Flutter</Box>,{' '}
               <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>React Native</Box>, e{' '}
@@ -117,13 +119,13 @@ export const AboutSection = () => {
                 Objetivos Futuros
               </Typography>
               <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Estou comprometido em aprofundar meus conhecimentos com uma{' '}
+                Formado em{' '}
                 <Box component="span" sx={{ color: 'warning.main', fontWeight: 500 }}>
-                  pós-graduação em Arquitetura de Software
+                  Engenharia da Computação
                 </Box>
-                . Além disso, quero continuar explorando tecnologias emergentes
-                que possam transformar a forma como desenvolvemos software e
-                criamos experiências digitais impactantes.
+                , estou comprometido em continuar aprofundando meus conhecimentos
+                e explorando tecnologias emergentes que possam transformar a forma como
+                desenvolvemos software e criamos experiências digitais impactantes.
               </Typography>
             </Paper>
           </Box>

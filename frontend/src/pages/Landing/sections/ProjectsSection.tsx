@@ -4,30 +4,30 @@ import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material'
 const projects = [
   {
     id: 1,
-    title: 'MesaFlix',
-    description: 'Um SaaS para cardápios de estabelecimentos, com pedidos por QR Code e gestão integrada.',
-    technologies: ['React', 'Firebase', 'TypeScript'],
-    image: 'https://via.placeholder.com/400x300/1e272e/4caf50?text=MesaFlix',
-    repository: 'https://github.com/seu-perfil/mesaflix',
-    demo: 'https://mesaflix.app',
+    title: 'Codebymister',
+    description: 'Dashboard completo para gestão de leads, projetos, propostas e manutenções. Sistema CRM com autenticação Firebase, interface React e API .NET.',
+    technologies: ['.NET 8', 'React', 'TypeScript', 'Firebase', 'Entity Framework Core'],
+    image: '/codebymister-project.png',
+    repository: null,
+    demo: null,
   },
   {
     id: 2,
-    title: 'Simulador de Fazenda',
-    description: 'Jogo de simulação de fazenda com gráficos realistas e áreas personalizáveis.',
-    technologies: ['Unity 3D', 'C#', 'Blender'],
-    image: 'https://via.placeholder.com/400x300/1e272e/4caf50?text=Farm+Simulator',
-    repository: 'https://github.com/seu-perfil/farm-simulator',
-    demo: 'https://farmsim.demo',
+    title: 'MrDelivery',
+    description: 'Sistema completo de gestão para delivery, incluindo cadastro de produtos, controle de custos, precificação inteligente e relatórios financeiros.',
+    technologies: ['.NET 9', 'React', 'TypeScript', 'MySQL', 'Material-UI', 'iFood API'],
+    image: '/mrdelivery-project.png',
+    repository: null,
+    demo: null,
   },
   {
     id: 3,
-    title: 'Dashboard Analytics',
-    description: 'Sistema de análise de dados com visualizações interativas e relatórios personalizados.',
-    technologies: ['React', 'TypeScript', '.NET Core'],
-    image: 'https://via.placeholder.com/400x300/1e272e/4caf50?text=Dashboard',
-    repository: 'https://github.com/seu-perfil/dashboard',
-    demo: null,
+    title: 'Agro Simulator Game',
+    description: 'Protótipo de jogo de simulação de fazenda estilo Farming Simulator. Projeto de TCC em Engenharia da Computação com gráficos 3D e mecânicas realistas.',
+    technologies: ['Unity 3D', 'C#', 'Blender', '3D Modeling'],
+    image: '/agrosimulator-project.png',
+    repository: null,
+    demo: 'https://www.linkedin.com/in/mrffilipe/',
   },
 ];
 
@@ -122,17 +122,19 @@ export const ProjectsSection = () => {
                   <Divider sx={{ mb: 2 }} />
 
                   <Stack direction="row" spacing={2}>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      startIcon={<GitHubIcon />}
-                      href={project.repository}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      sx={{ flex: 1 }}
-                    >
-                      Código
-                    </Button>
+                    {project.repository && (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        startIcon={<GitHubIcon />}
+                        href={project.repository}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ flex: 1 }}
+                      >
+                        Código
+                      </Button>
+                    )}
                     {project.demo && (
                       <Button
                         variant="contained"
@@ -141,9 +143,9 @@ export const ProjectsSection = () => {
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        sx={{ flex: 1 }}
+                        sx={{ flex: project.repository ? 1 : '100%' }}
                       >
-                        Demo
+                        {project.demo.includes('linkedin') ? 'LinkedIn' : 'Demo'}
                       </Button>
                     )}
                   </Stack>
