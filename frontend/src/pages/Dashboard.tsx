@@ -7,6 +7,8 @@ import {
   Box,
   CircularProgress,
   Paper,
+  Stack,
+  Chip,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -14,15 +16,24 @@ import {
   Campaign,
   Description,
   AttachMoney,
+  Google,
+  LinkedIn,
+  Instagram,
+  PersonAdd,
+  MoreHoriz,
 } from '@mui/icons-material';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { dashboardService } from '../services/dashboardService';
+import { leadsService } from '../services/leadsService';
 import type { DashboardDto } from '../types/dashboard';
+import type { LeadDto } from '../types/lead';
+import { LeadSource } from '../types/lead';
 
 export function Dashboard() {
   const [data, setData] = useState<DashboardDto | null>(null);
+  const [leads, setLeads] = useState<LeadDto[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,8 +42,12 @@ export function Dashboard() {
 
   const loadData = async () => {
     try {
-      const response = await dashboardService.getData();
-      setData(response.data);
+      const [dashboardResponse, leadsResponse] = await Promise.all([
+        dashboardService.getData(),
+        leadsService.getAll(),
+      ]);
+      setData(dashboardResponse.data);
+      setLeads(leadsResponse.data);
     } catch (error) {
       console.error('Erro ao carregar dashboard:', error);
     } finally {
@@ -116,6 +131,8 @@ export function Dashboard() {
     { id: 3, value: data.closedProjects, label: 'Fechados' },
   ];
 
+  const hasPipelineData = pipelineData.some(item => item.value > 0);
+
   const revenueData = [
     { month: 'Jan', value: data.monthlyRevenue * 0.7 },
     { month: 'Fev', value: data.monthlyRevenue * 0.8 },
@@ -123,13 +140,20 @@ export function Dashboard() {
     { month: 'Abr', value: data.monthlyRevenue },
   ];
 
+  const getLeadCountBySource = (source: LeadSource): number => {
+    return leads.filter(lead => lead.source === source).length;
+  };
+
   const sourceData = [
-    { id: 0, value: 35, label: 'Google' },
-    { id: 1, value: 25, label: 'LinkedIn' },
-    { id: 2, value: 20, label: 'Indicação' },
-    { id: 3, value: 15, label: 'Instagram' },
-    { id: 4, value: 5, label: 'Outros' },
+    { id: 0, value: getLeadCountBySource(LeadSource.GoogleSearch), label: 'Google', color: '#4285F4', icon: <Google /> },
+    { id: 1, value: getLeadCountBySource(LeadSource.LinkedIn), label: 'LinkedIn', color: '#0A66C2', icon: <LinkedIn /> },
+    { id: 2, value: getLeadCountBySource(LeadSource.Referral), label: 'Indicação', color: '#4CAF50', icon: <PersonAdd /> },
+    { id: 3, value: getLeadCountBySource(LeadSource.Instagram), label: 'Instagram', color: '#E4405F', icon: <Instagram /> },
+    { id: 4, value: getLeadCountBySource(LeadSource.Other), label: 'Outros', color: '#9E9E9E', icon: <MoreHoriz /> },
   ];
+
+  const hasRevenueData = data.monthlyRevenue > 0;
+  const hasSourceData = sourceData.some(item => item.value > 0);
 
   return (
     <Box>
@@ -159,23 +183,33 @@ export function Dashboard() {
         ))}
       </Grid>
 
-      <Grid container spacing={3} sx={{ mt: 1 }}>
+      <Grid container spacing={3} sx={{ mt: { xs: 3, md: 4 } }}>
         <Grid size={{ xs: 12, md: 4 }}>
           <Paper sx={{ p: 3, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               Funil de Vendas
             </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-              <PieChart
-                series={[
-                  {
-                    data: pipelineData,
-                    highlightScope: { fade: 'global', highlight: 'item' },
-                  },
-                ]}
-                height={280}
-              />
-            </Box>
+            {hasPipelineData ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <PieChart
+                  series={[
+                    {
+                      data: pipelineData,
+                      highlightScope: { fade: 'global', highlight: 'item' },
+                      arcLabel: (item) => `${item.value}`,
+                      arcLabelMinAngle: 35,
+                    },
+                  ]}
+                  height={280}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 280, mt: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Não há dados disponíveis
+                </Typography>
+              </Box>
+            )}
           </Paper>
         </Grid>
 
@@ -184,20 +218,30 @@ export function Dashboard() {
             <Typography variant="h6" gutterBottom>
               Receita Mensal
             </Typography>
-            <Box sx={{ mt: 2 }}>
-              <LineChart
-                xAxis={[{ scaleType: 'point', data: revenueData.map(d => d.month) }]}
-                series={[
-                  {
-                    data: revenueData.map(d => d.value),
-                    area: true,
-                    color: '#4caf50',
-                  },
-                ]}
-                height={280}
-                margin={{ top: 10, right: 10, bottom: 30, left: 60 }}
-              />
-            </Box>
+            {hasRevenueData ? (
+              <Box sx={{ mt: 2 }}>
+                <LineChart
+                  xAxis={[{ scaleType: 'point', data: revenueData.map(d => d.month) }]}
+                  series={[
+                    {
+                      data: revenueData.map(d => d.value),
+                      area: true,
+                      color: '#4caf50',
+                      label: 'Receita (R$)',
+                      showMark: true,
+                    },
+                  ]}
+                  height={280}
+                  margin={{ top: 10, right: 10, bottom: 30, left: 60 }}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 280, mt: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Não há dados disponíveis
+                </Typography>
+              </Box>
+            )}
           </Paper>
         </Grid>
 
@@ -206,14 +250,46 @@ export function Dashboard() {
             <Typography variant="h6" gutterBottom>
               Origem dos Leads
             </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-              <BarChart
-                xAxis={[{ scaleType: 'band', data: sourceData.map(d => d.label) }]}
-                series={[{ data: sourceData.map(d => d.value), color: '#4caf50' }]}
-                height={280}
-                margin={{ top: 10, right: 10, bottom: 50, left: 40 }}
-              />
-            </Box>
+            {hasSourceData ? (
+              <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                  <BarChart
+                    xAxis={[{ scaleType: 'band', data: sourceData.map(d => d.label) }]}
+                    series={sourceData.map((source) => ({
+                      data: sourceData.map((s) => s.id === source.id ? s.value : 0),
+                      stack: 'total',
+                      color: source.color,
+                    }))}
+                    height={240}
+                    margin={{ top: 10, right: 10, bottom: 50, left: 40 }}
+                  />
+                </Box>
+                <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 1, justifyContent: 'center', gap: 1 }}>
+                  {sourceData.map((source) => (
+                    <Chip
+                      key={source.id}
+                      icon={source.icon}
+                      label={`${source.label}: ${source.value}`}
+                      size="small"
+                      sx={{
+                        backgroundColor: `${source.color}20`,
+                        color: source.color,
+                        border: `1px solid ${source.color}40`,
+                        '& .MuiChip-icon': {
+                          color: source.color,
+                        },
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </Box>
+            ) : (
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 280, mt: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Não há dados disponíveis
+                </Typography>
+              </Box>
+            )}
           </Paper>
         </Grid>
       </Grid>

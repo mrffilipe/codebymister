@@ -217,7 +217,7 @@ export function Conversations() {
         </Table>
       </TableContainer>
 
-      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="xs" fullWidth>
         <DialogTitle>
           {editingConversation ? 'Editar Conversa' : 'Nova Conversa'}
         </DialogTitle>

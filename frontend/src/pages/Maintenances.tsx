@@ -212,7 +212,7 @@ export function Maintenances() {
         </Table>
       </TableContainer>
 
-      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="xs" fullWidth>
         <DialogTitle>
           {editingMaintenance ? 'Editar Manutenção' : 'Nova Manutenção'}
         </DialogTitle>

@@ -228,7 +228,7 @@ export function Projects() {
         </Table>
       </TableContainer>
 
-      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="xs" fullWidth>
         <DialogTitle>
           {editingProject ? 'Editar Projeto' : 'Novo Projeto'}
         </DialogTitle>

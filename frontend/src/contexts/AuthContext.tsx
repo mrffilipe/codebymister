@@ -67,6 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const newSession = await authService.exchangeToken(firebaseIdToken);
     setAuthSession(newSession);
     setSessionState(newSession);
+    setUser(credential.user);
   };
 
   const logout = async () => {
