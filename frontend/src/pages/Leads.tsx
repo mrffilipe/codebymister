@@ -19,12 +19,16 @@ import {
   useTheme,
   FormControlLabel,
   Checkbox,
+  TableSortLabel,
 } from '@mui/material';
 import { Add, Edit, Delete } from '@mui/icons-material';
 import { leadsService } from '../services/leadsService';
 import type { LeadDto, CreateLeadRequest, LeadPriority, LeadSource } from '../types/lead';
 import { StepperDialog } from '../components/StepperDialog';
 import { phoneMask, removeMask, instagramMask } from '../utils/masks';
+
+type SortDirection = 'asc' | 'desc';
+type SortField = 'name' | 'segment' | 'city' | 'priority' | 'source' | 'alreadyApproached' | 'createdAt';
 
 const priorityLabels = {
   1: 'Baixa',
@@ -68,6 +72,63 @@ export function Leads() {
     phone: '',
   });
   const [alreadyApproached, setAlreadyApproached] = useState(false);
+  const [sortField, setSortField] = useState<SortField>('name');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
+  const handleSort = (field: SortField) => {
+    const isAsc = sortField === field && sortDirection === 'asc';
+    setSortDirection(isAsc ? 'desc' : 'asc');
+    setSortField(field);
+  };
+
+  const sortLeads = (leadsToSort: LeadDto[]) => {
+    return [...leadsToSort].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (sortField) {
+        case 'name':
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case 'segment':
+          aValue = a.segment.toLowerCase();
+          bValue = b.segment.toLowerCase();
+          break;
+        case 'city':
+          aValue = a.city.toLowerCase();
+          bValue = b.city.toLowerCase();
+          break;
+        case 'priority':
+          aValue = a.priority;
+          bValue = b.priority;
+          break;
+        case 'source':
+          aValue = a.source;
+          bValue = b.source;
+          break;
+        case 'alreadyApproached':
+          aValue = a.alreadyApproached;
+          bValue = b.alreadyApproached;
+          break;
+        case 'createdAt':
+          aValue = new Date(a.createdAt);
+          bValue = new Date(b.createdAt);
+          break;
+        default:
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+      }
+
+      if (aValue < bValue) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  };
 
   useEffect(() => {
     loadLeads();
@@ -193,18 +254,74 @@ export function Leads() {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <TableCell>Nome</TableCell>
-              <TableCell>Segmento</TableCell>
-              <TableCell>Cidade</TableCell>
-              <TableCell>Prioridade</TableCell>
-              <TableCell>Origem</TableCell>
-              <TableCell>Já Abordado</TableCell>
-              <TableCell>Criado em</TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'name'}
+                  direction={sortField === 'name' ? sortDirection : 'asc'}
+                  onClick={() => handleSort('name')}
+                >
+                  Nome
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'segment'}
+                  direction={sortField === 'segment' ? sortDirection : 'asc'}
+                  onClick={() => handleSort('segment')}
+                >
+                  Segmento
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'city'}
+                  direction={sortField === 'city' ? sortDirection : 'asc'}
+                  onClick={() => handleSort('city')}
+                >
+                  Cidade
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'priority'}
+                  direction={sortField === 'priority' ? sortDirection : 'asc'}
+                  onClick={() => handleSort('priority')}
+                >
+                  Prioridade
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'source'}
+                  direction={sortField === 'source' ? sortDirection : 'asc'}
+                  onClick={() => handleSort('source')}
+                >
+                  Origem
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'alreadyApproached'}
+                  direction={sortField === 'alreadyApproached' ? sortDirection : 'asc'}
+                  onClick={() => handleSort('alreadyApproached')}
+                >
+                  Já Abordado
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortField === 'createdAt'}
+                  direction={sortField === 'createdAt' ? sortDirection : 'asc'}
+                  onClick={() => handleSort('createdAt')}
+                >
+                  Criado em
+                </TableSortLabel>
+              </TableCell>
               <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {leads.map((lead) => (
+            {sortLeads(leads).map((lead) => (
               <TableRow key={lead.id}>
                 <TableCell>{lead.name}</TableCell>
                 <TableCell>{lead.segment}</TableCell>
