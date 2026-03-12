@@ -15,6 +15,7 @@ public class Lead : BaseEntity
     public string ProblemDescription { get; private set; }
     public LeadPriority Priority { get; private set; }
     public LeadSource Source { get; private set; }
+    public bool AlreadyApproached { get; private set; }
 
     private Lead() { }
 
@@ -25,6 +26,7 @@ public class Lead : BaseEntity
         string problemDescription,
         LeadPriority priority,
         LeadSource source,
+        bool alreadyApproached = false,
         string? website = null,
         string? instagram = null,
         string? phone = null)
@@ -38,6 +40,7 @@ public class Lead : BaseEntity
         ProblemDescription = problemDescription;
         Priority = priority;
         Source = source;
+        AlreadyApproached = alreadyApproached;
     }
 
     public void Update(
@@ -47,6 +50,7 @@ public class Lead : BaseEntity
         string problemDescription,
         LeadPriority priority,
         LeadSource source,
+        bool alreadyApproached,
         string? website,
         string? instagram,
         string? phone)
@@ -60,5 +64,6 @@ public class Lead : BaseEntity
         ProblemDescription = problemDescription;
         Priority = priority;
         Source = source;
+        AlreadyApproached = alreadyApproached;
     }
 }

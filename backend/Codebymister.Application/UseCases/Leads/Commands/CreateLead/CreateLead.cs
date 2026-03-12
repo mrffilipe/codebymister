@@ -25,6 +25,7 @@ public class CreateLead : ICreateLead
             request.ProblemDescription,
             request.Priority,
             request.Source,
+            request.AlreadyApproached,
             request.Website,
             request.Instagram,
             request.Phone

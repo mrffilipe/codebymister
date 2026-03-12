@@ -9,6 +9,7 @@ public record CreateLeadRequest(
     string ProblemDescription,
     LeadPriority Priority,
     LeadSource Source,
+    bool AlreadyApproached = false,
     string? Website = null,
     string? Instagram = null,
     string? Phone = null

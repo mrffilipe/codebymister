@@ -9,6 +9,7 @@ public record UpdateLeadRequest(
     string ProblemDescription,
     LeadPriority Priority,
     LeadSource Source,
+    bool AlreadyApproached,
     string? Website = null,
     string? Instagram = null,
     string? Phone = null

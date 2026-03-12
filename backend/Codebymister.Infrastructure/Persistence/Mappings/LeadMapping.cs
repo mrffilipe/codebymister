@@ -60,5 +60,9 @@ public class LeadMapping : BaseEntityConfiguration<Lead>
         builder.Property(l => l.Source)
             .HasColumnName("source")
             .IsRequired();
+            
+        builder.Property(l => l.AlreadyApproached)
+            .HasColumnName("already_approached")
+            .HasDefaultValue(false);
     }
 }

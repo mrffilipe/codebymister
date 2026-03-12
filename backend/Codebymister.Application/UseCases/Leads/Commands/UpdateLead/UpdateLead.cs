@@ -29,6 +29,7 @@ public class UpdateLead : IUpdateLead
             request.ProblemDescription,
             request.Priority,
             request.Source,
+            request.AlreadyApproached,
             request.Website,
             request.Instagram,
             request.Phone

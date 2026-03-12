@@ -17,6 +17,8 @@ import {
   CircularProgress,
   useMediaQuery,
   useTheme,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
 import { Add, Edit, Delete } from '@mui/icons-material';
 import { leadsService } from '../services/leadsService';
@@ -65,6 +67,7 @@ export function Leads() {
     instagram: '',
     phone: '',
   });
+  const [alreadyApproached, setAlreadyApproached] = useState(false);
 
   useEffect(() => {
     loadLeads();
@@ -95,6 +98,7 @@ export function Leads() {
         instagram: lead.instagram || '',
         phone: lead.phone || '',
       });
+      setAlreadyApproached(lead.alreadyApproached);
     } else {
       setEditingLead(null);
       setFormData({
@@ -108,6 +112,7 @@ export function Leads() {
         instagram: '',
         phone: '',
       });
+      setAlreadyApproached(false);
     }
     setDialogOpen(true);
   };
@@ -126,6 +131,7 @@ export function Leads() {
       instagram: '',
       phone: '',
     });
+    setAlreadyApproached(false);
   };
 
   const handleSubmit = async () => {
@@ -133,6 +139,7 @@ export function Leads() {
       ...formData,
       phone: formData.phone ? removeMask(formData.phone) : '',
       instagram: formData.instagram ? formData.instagram.replace('@', '') : '',
+      alreadyApproached,
     };
 
     if (editingLead) {
@@ -191,6 +198,7 @@ export function Leads() {
               <TableCell>Cidade</TableCell>
               <TableCell>Prioridade</TableCell>
               <TableCell>Origem</TableCell>
+              <TableCell>Já Abordado</TableCell>
               <TableCell>Criado em</TableCell>
               <TableCell align="right">Ações</TableCell>
             </TableRow>
@@ -209,6 +217,13 @@ export function Leads() {
                   />
                 </TableCell>
                 <TableCell>{sourceLabels[lead.source]}</TableCell>
+                <TableCell>
+                  <Chip
+                    label={lead.alreadyApproached ? 'Sim' : 'Não'}
+                    color={lead.alreadyApproached ? 'success' : 'default'}
+                    size="small"
+                  />
+                </TableCell>
                 <TableCell>
                   {new Date(lead.createdAt).toLocaleDateString('pt-BR')}
                 </TableCell>
@@ -305,6 +320,16 @@ export function Leads() {
               </MenuItem>
             ))}
           </TextField>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={alreadyApproached}
+                onChange={(e) => setAlreadyApproached(e.target.checked)}
+                color="primary"
+              />
+            }
+            label="Já Abordado"
+          />
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

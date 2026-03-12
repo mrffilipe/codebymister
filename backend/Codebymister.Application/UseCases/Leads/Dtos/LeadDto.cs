@@ -13,6 +13,7 @@ public record LeadDto(
     string ProblemDescription,
     LeadPriority Priority,
     LeadSource Source,
+    bool AlreadyApproached,
     DateTime CreatedAt,
     DateTime? UpdatedAt
 )
@@ -30,6 +31,7 @@ public record LeadDto(
             lead.ProblemDescription,
             lead.Priority,
             lead.Source,
+            lead.AlreadyApproached,
             lead.CreatedAt,
             lead.UpdatedAt
         );

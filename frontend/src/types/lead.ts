@@ -27,6 +27,7 @@ export interface LeadDto {
   problemDescription: string;
   priority: LeadPriority;
   source: LeadSource;
+  alreadyApproached: boolean;
   createdAt: string;
   updatedAt?: string | null;
 }
@@ -50,6 +51,7 @@ export interface UpdateLeadRequest {
   problemDescription: string;
   priority: LeadPriority;
   source: LeadSource;
+  alreadyApproached: boolean;
   website?: string;
   instagram?: string;
   phone?: string;
